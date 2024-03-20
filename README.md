@@ -5,3 +5,4 @@ Watch websites for changes.
 alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 cd ./site-snoop
 sail up
+(If sail not installed 'php artisan sail:install')
