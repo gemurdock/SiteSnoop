@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FetchWebsiteController;
+use App\Services\WebFetcher;
+
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/test', [FetchWebsiteController::class, 'fetch']);
