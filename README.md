@@ -10,3 +10,6 @@ sail up
 
 # Run tests, but exclude external requests
 php artisan test --exclude-group=external_resource
+
+# Run test, with xdbug, for only one test
+php -dxdebug.remote_autostart artisan test --filter JSONQueryTest
