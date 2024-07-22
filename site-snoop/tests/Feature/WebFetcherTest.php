@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Services\WebFetcher;
 use App\Services\FilterAction;
@@ -85,17 +83,16 @@ class WebFetcherTest extends TestCase
 
     public function test_json(): void
     {
-        $exceptionHappened = false;
+        $result = null;
         try {
-            $filter = new FilterAction(FilterAction::SELECT, FilterAction::FUNC_JSON, 'title');
+            $filter = new FilterAction(FilterAction::SELECT, FilterAction::FUNC_JSON, '$[0].title');
             $fetcher = new WebFetcher();
             $html = TestHelper::fetchSaveOrLoad("https://jsonplaceholder.typicode.com/posts");
             $result = $fetcher->applyAction($html['html'], $filter);
         } catch (\Exception $e) {
-            $exceptionHappened = true;
-            $this->assertEquals('JSON not supported yet.', $e->getMessage());
+            $this->assertTrue($e === null, "JSON test should not have thrown exception: " . $e->getMessage());
         }
-        $this->assertTrue($exceptionHappened);
+        $this->assertEquals('sunt aut facere repellat provident occaecati excepturi optio reprehenderit', $result);
     }
 
     public function test_get_regex_overall_result(): void

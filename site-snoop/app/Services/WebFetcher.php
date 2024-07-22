@@ -10,6 +10,7 @@ use DOMDocument;
 use DOMXPath;
 use GuzzleHttp\Exception\ClientException;
 use App\Services\FilterAction;
+use App\Services\JSONQuery;
 
 class WebFetcher
 {
@@ -94,7 +95,7 @@ class WebFetcher
                     }
                     return $tmp;
                 } else if ($function === FilterAction::FUNC_JSON) {
-                    throw new InvalidArgumentException('JSON not supported yet.');
+                    return $this->findAllJSON($html, $filter);
                 } else {
                     throw new InvalidArgumentException('Function must be one of the constants.');
                 }
@@ -157,6 +158,13 @@ class WebFetcher
         }
         $matches = [];
         preg_match_all($pattern, $html, $matches);
+        return $matches;
+    }
+
+    public function findAllJSON($data, $pattern)
+    {
+        $search = new JSONQuery($data);
+        $matches = $search->query($pattern);
         return $matches;
     }
 
